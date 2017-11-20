@@ -17,4 +17,4 @@
 account.json
 
 #TF Vars
-gcp/terraform.tfvars
+*.tfvars
