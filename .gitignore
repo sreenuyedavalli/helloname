@@ -14,7 +14,11 @@
 .glide/
 
 #GCP auth
-account.json
+gcp/account.json
 
 #TF Vars
-*.tfvars
+gcp/*.tfvars
+
+#tf init script
+gcp/set-backend.sh
+
