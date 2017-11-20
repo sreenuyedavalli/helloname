@@ -55,3 +55,9 @@ func getNames(db *sql.DB, start, count int) ([]namest, error) {
 
     return names, nil
 }
+
+func (n *namest) deleteCounts(db *sql.DB) error {
+    _, err := db.Exec("UPDATE names SET count=0 WHERE count>0")
+
+    return err
+}
