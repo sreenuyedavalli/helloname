@@ -20,6 +20,9 @@ account.json
 *.tfvars
 *.tfstate
 *.tfplan
+/gcp/*.tfplan
+/gcp/*.tfvars
+/gcp/*.tfstate
 
 #tf init script
 set-backend.sh
