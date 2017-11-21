@@ -23,7 +23,7 @@ account.json
 /gcp/*.tfplan
 /gcp/*.tfvars
 /gcp/*.tfstate
-
+/gcp/*.terraform/
 #tf init script
 set-backend.sh
 
