@@ -18,6 +18,8 @@ account.json
 
 #TF Vars
 *.tfvars
+*.tfstate
+*.tfplan
 
 #tf init script
 set-backend.sh
