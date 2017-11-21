@@ -1,29 +1,47 @@
-apiVersion: extensions/v1beta1
+Version: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ .Values.appName }}
   labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: {{ .Values.appName }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
-        app: {{ template "fullname" . }}
+        app: {{ .Values.appName }}
+        release: {{ .Release.Name }}
     spec:
       containers:
-      - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        ports:
-        - containerPort: {{ .Values.service.internalPort }}
-        livenessProbe:
-          httpGet:
-            path: /
-            port: {{ .Values.service.internalPort }}
-        readinessProbe:
-          httpGet:
-            path: /
-            port: {{ .Values.service.internalPort }}
-        resources:
-{{ toYaml .Values.resources | indent 10 }}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.internalPort }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.internalPort }}
+          volumeMounts:
+          - name: cloudsql-proxy-credentials
+            mountPath: /secrets/cloudsql
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          env:
+      volumes:
+      - name: cloudsql-proxy-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}{{ toYaml .Values.resources | indent 10 }}

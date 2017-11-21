@@ -1,4 +1,4 @@
 apiVersion: v1
-description: A Helm chart for Kubernetes
+description: A Hello Name Counter Deployed to K8s
 name: helloname-chart
 version: 0.1.0

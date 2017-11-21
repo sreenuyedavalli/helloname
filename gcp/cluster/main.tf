@@ -3,7 +3,7 @@ resource "google_container_cluster" "primary" {
   project            = "${var.project_id}"
   zone               = "${var.master_zone}"
   initial_node_count = 1
-  node_version = "1.8.2-gke.0"
+  node_version = "1.7.8-gke.0"
 
   master_auth {
     username = "${var.master_username}"

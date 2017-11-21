@@ -19,5 +19,5 @@ create:
 destroy:
 	@echo "Destroying Helloname Infra:"
 	cd $(LOCATION) && \
-	terraform plan -destroy -var-file terraform.tfvars -out terraform.tfplan
+	terraform plan -destroy -var-file terraform.tfvars -out terraform.tfplan && \
 	terraform apply terraform.tfplan
