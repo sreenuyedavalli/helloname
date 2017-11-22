@@ -1,4 +1,4 @@
-Version: extensions/v1beta1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ .Values.appName }}
@@ -18,9 +18,9 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - "./helloname"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           livenessProbe:
@@ -31,20 +31,15 @@ spec:
             httpGet:
               path: /health
               port: {{ .Values.service.internalPort }}
-          volumeMounts:
-          - name: cloudsql-proxy-credentials
-            mountPath: /secrets/cloudsql
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           env:
-{{ include "hello_env_vars" . | indent 12 }}  
+{{ include "hello_env_vars" . | indent 12 }}
       volumes:
       - name: cloudsql-proxy-credentials
         secret:
           secretName: pg-sqlproxy-gcloud-sqlproxy
-      imagePullSecrets:
-        - name: {{ .Values.imagePullSecret }}
     {{- if .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
-    {{- end }}{{ toYaml .Values.resources | indent 10 }}
+    {{- end }}

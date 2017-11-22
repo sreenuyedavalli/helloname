@@ -20,3 +20,4 @@
       name: hello-name-secret
       key: host
 {{- end -}}
+
