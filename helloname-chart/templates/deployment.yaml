@@ -19,6 +19,8 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "./helloname"
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           livenessProbe:
@@ -35,10 +37,11 @@ spec:
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           env:
+{{ include "hello_env_vars" . | indent 12 }}  
       volumes:
       - name: cloudsql-proxy-credentials
         secret:
-          secretName: cloudsql-instance-credentials
+          secretName: pg-sqlproxy-gcloud-sqlproxy
       imagePullSecrets:
         - name: {{ .Values.imagePullSecret }}
     {{- if .Values.nodeSelector }}
