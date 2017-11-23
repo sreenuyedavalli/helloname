@@ -43,59 +43,66 @@ func (a *App) Run(addr string) {
 
 //All routes for app
 func (a *App) initializeRoutes() {
-	a.Router.HandleFunc("/hello/:{name:[a-zA-Z]+}", a.showName).Methods("GET")
+	a.Router.HandleFunc("/hello/:{name:[a-zA-Z]+}", a.getName).Methods("GET")
 	a.Router.HandleFunc("/health", a.getHardwareData).Methods("GET")
-	a.Router.HandleFunc("/hello/:{name:[a-zA-Z]+}", a.createName).Methods("POST")
+//	a.Router.HandleFunc("/hello/:{name:[a-zA-Z]+}", a.createName).Methods("POST")
 	a.Router.HandleFunc("/counts", a.getNames).Methods("GET")
-	a.Router.HandleFunc("/hello/:{name:[a-zA-Z]+}", a.updateCount).Methods("PUT")
+//	a.Router.HandleFunc("/hello/:{name:[a-zA-Z]+}", a.updateCount).Methods("PUT")
 	a.Router.HandleFunc("/delete", a.deleteCounts).Methods("DELETE")
 }
 
 //Show name
-func (a *App) showName(w http.ResponseWriter, r *http.Request) {
-	helloName := r.URL.Path[len("/hello/:"):]
-	fmt.Fprintf(w, "Hello, %s!", helloName)
-}
 
+func (a *App) getName(w http.ResponseWriter, r *http.Request) {
+      vars := mux.Vars(r)
+      name := vars["name"]
+      fmt.Fprintf(w, "Hello, %s!", name)
+      n := namest{Name: name}
+      if nomatch := n.getName(a.DB); nomatch !=nil {
+            n.createName(a.DB)
+         }
+     defer r.Body.Close()
+     n.updateCount(a.DB)
+}      
 //Creaet a name
-func (a *App) createName(w http.ResponseWriter, r *http.Request) {
-	var n namest
-	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&n); err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
-		return
-	}
-	defer r.Body.Close()
-
-	if err := n.createName(a.DB); err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	respondWithJSON(w, http.StatusCreated, n)
-}
+//func (a *App) createName(w http.ResponseWriter, r *http.Request) {
+//	var n namest
+//	decoder := json.NewDecoder(r.Body)
+//	if err := decoder.Decode(&n); err != nil {
+//		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+//		return
+//	}
+//	defer r.Body.Close()
+//
+//	if err := n.createName(a.DB); err != nil {
+//		respondWithError(w, http.StatusInternalServerError, err.Error())
+//		return
+//	}
+//
+//	respondWithJSON(w, http.StatusCreated, n)
+//}
 
 //Update count on existing name
-func (a *App) updateCount(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	name := vars["name"]
-	var n namest
-	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&n); err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid resquest payload")
-		return
-	}
-	defer r.Body.Close()
-
-	n.Name = name
-
-	if err := n.updateCount(a.DB); err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	respondWithJSON(w, http.StatusOK, n)
-}
+//func (a *App) updateCount(w http.ResponseWriter, r *http.Request) {
+//	vars := mux.Vars(r)
+//	name := vars["name"]
+//	var n namest
+//	decoder := json.NewDecoder(r.Body)
+//	if err := decoder.Decode(&n); err != nil {
+//		respondWithError(w, http.StatusBadRequest, "Invalid resquest payload")
+//		return
+//	}
+//	defer r.Body.Close()
+//
+//	n.Name = name
+//
+//	if err := n.updateCount(a.DB); err != nil {
+//		respondWithError(w, http.StatusInternalServerError, err.Error())
+//		return
+//	}
+//
+//	respondWithJSON(w, http.StatusOK, n)
+//}
 
 //Get Names and Counts
 func (a *App) getNames(w http.ResponseWriter, r *http.Request) {
@@ -155,7 +162,7 @@ func (a *App) getHardwareData(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(html))
 }
 
-//Error Handler for json
+////Error Handler for json
 func respondWithError(w http.ResponseWriter, code int, message string) {
 	respondWithJSON(w, code, map[string]string{"error": message})
 }

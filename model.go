@@ -56,6 +56,12 @@ func getNames(db *sql.DB, start, count int) ([]namest, error) {
 	return names, nil
 }
 
+func (n *namest) getName(db *sql.DB) error {
+    return db.QueryRow("SELECT name FROM names WHERE name=$1",
+        n.Name).Scan(&n.Name)
+}
+
+
 func (n *namest) deleteCounts(db *sql.DB) error {
 	_, err := db.Exec("UPDATE names SET count=0 WHERE count>0")
 
