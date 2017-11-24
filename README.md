@@ -12,6 +12,7 @@ Kubernetes
 Helm
 Terraform
 Postgres
+Gcloud CLI
 
 Buckets:
 nyt-hello-tf //tfvars and state
@@ -19,7 +20,7 @@ ny-helloname-creds //json creds
 
 
 Build and Deploy:
-GKE Cluster can be bootstraped by downloading the .tfvars file to the ./gcp dir of this repo. CloudSQL databases prohibit the reuse of identical db intance names for a fixed period so update the {db_instance_name =} var in tfvars to a uniqe value to launch the db. The Makefile conists of 5 operations. 
+GKE Cluster can be bootstraped by downloading the .tfvars file to the ./gcp dir of this repo. CloudSQL databases prohibit the reuse of identical db intance names for a fixed period so update the {db_instance_name =} var in tfvars to a uniqe value to launch the db. The Makefile conists of 8 operations. 
 
 1. make plan - Runs terraform plan to see what will be launched in GCE and outputs what will occurr during the run.
 
@@ -29,6 +30,12 @@ GKE Cluster can be bootstraped by downloading the .tfvars file to the ./gcp dir 
 
 4. make install - Initial install of the chart used for deploying to the cluster
 
-5. make create - Upgrades installed chart of the helloname app
+5. make deploy - Upgrades installed chart of the helloname app
+
+6. make run - Runs go app in go
+
+7. make build - Docker builds helloname app
+
+8. make push - Docker push helloname app to docker hub registry 
 
 Enjoy!

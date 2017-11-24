@@ -30,4 +30,14 @@ install:
 	@echo "Installing Initial Helm Chart"
 	helm install -namespace prd helloconnect ./helloname-chart
 
+run:	
+	@echo "Go running app"
+	go run main.go model.go app.go
 
+build:  
+	@echo "Building docker image"
+	docker build -t sreenuyedavalli/helloname:latest .
+
+push:   
+	@echo "Pushing docker image to sreenuyedavalli/helloname"
+	docker push sreenuyedavalli/helloname:latest
