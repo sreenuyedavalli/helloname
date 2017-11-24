@@ -2,7 +2,8 @@
 
 Assumptions: 
 Build a 3 tier web app. Build an API to accept json requests and take an action
-In this case check GET endpoint hello/:somename and return and print the name as well as to lookup the name in a database. If the name exists, increase a counter tracking number of GET requests for that name. If the name doesn't exist then insert the name into a table and increase the names count by 1. To delete the counts on all names post a json request to /counts..(curl -X DELETE -H "Content-Type: application/json" http://104.154.136.98/counts). To return all results go to http://104.154.136.98/counts. Any undefined route will return a 404. 
+In this case check GET endpoint hello/:somename and return and print the name as well as to lookup the name in a database. If the name exists, increase a counter tracking number of GET requests for that name. If the name doesn't exist then insert the name into a table and increase the names count by 1. To delete the counts on all names post a json request to /counts..(curl -X DELETE -H "Content-Type: application/json" http://104.154.136.98/counts). To return all results outputed in json tupe of the name and count go to http://104.154.136.98/counts. Any undefined route will return a 404. 
+To see system data go to http://104.154.136.98/health which will return disk and memory info.
 
 Tech:
 Go
@@ -25,3 +26,4 @@ GKE Cluster can be bootstraped by downloading the .tfvars file to the ./gcp dir 
 
 5. make create - Upgrades installed chart of the helloname app
 
+Enjoy!
