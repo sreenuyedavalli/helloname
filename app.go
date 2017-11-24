@@ -22,9 +22,9 @@ type App struct {
 }
 
 //App and DB Connection
-func (a *App) Initialize(user, password, dbname, host string) {
+func (a *App) Initialize(user, password, dbname string) {
 	connectionString :=
-		fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=disable", user, password, dbname, host)
+		fmt.Sprintf("user=%s password=%s dbname=%s host=localhost port=5432 sslmode=disable", user, password, dbname)
 
 	var err error
 	a.DB, err = sql.Open("postgres", connectionString)
@@ -46,7 +46,7 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/hello/:{name:[a-zA-Z]+}", a.getName).Methods("GET")
 	a.Router.HandleFunc("/health", a.getHardwareData).Methods("GET")
 	a.Router.HandleFunc("/counts", a.getNames).Methods("GET")
-	a.Router.HandleFunc("/delete", a.deleteCounts).Methods("DELETE")
+	a.Router.HandleFunc("/counts", a.deleteCounts).Methods("DELETE")
 }
 
 //Show name

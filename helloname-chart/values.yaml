@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: sreenuyedavalli/helloname
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 service:
   name: nginx
   type: LoadBalancer

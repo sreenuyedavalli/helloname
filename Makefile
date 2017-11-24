@@ -21,3 +21,13 @@ destroy:
 	cd $(LOCATION) && \
 	terraform plan -destroy -var-file terraform.tfvars -out terraform.tfplan && \
 	terraform apply terraform.tfplan
+
+deploy:
+	@echo "Deploying helloname"
+	helm upgrade --namespace prd hellonconnect ./helloname-chart
+
+install: 
+	@echo "Installing Initial Helm Chart"
+	helm install -namespace prd helloconnect ./helloname-chart
+
+

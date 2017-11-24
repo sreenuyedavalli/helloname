@@ -14,10 +14,5 @@
     secretKeyRef:
       name: hello-name-secret
       key: dbname
-- name: APP_DB_HOST
-  valueFrom:
-    secretKeyRef:
-      name: hello-name-secret
-      key: host
 {{- end -}}
 

@@ -9,7 +9,7 @@ import (
     "net/http"
     "net/http/httptest"
     "bytes"
-    "encoding/json"
+//    "encoding/json"
     "."
 )
 
@@ -90,9 +90,10 @@ func TestCreateName(t *testing.T) {
 
 func TestGetNames(t *testing.T) {
     clearTable()
-    addName(1)
 
     req, _ := http.NewRequest("GET", "/counts", nil)
     response := executeRequest(req)
 
     checkResponseCode(t, http.StatusOK, response.Code)
+
+}

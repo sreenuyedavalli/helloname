@@ -35,10 +35,28 @@ spec:
 {{ toYaml .Values.resources | indent 12 }}
           env:
 {{ include "hello_env_vars" . | indent 12 }}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy", "--dir=/cloudsql",
+                    "-instances=nyt-interview-sreenu-yedavalli:us-central1:hellodb=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            - name: ssl-certs
+              mountPath: /etc/ssl/certs
+            - name: cloudsql
+              mountPath: /cloudsql
       volumes:
-      - name: cloudsql-proxy-credentials
+      - name: cloudsql-instance-credentials
         secret:
-          secretName: pg-sqlproxy-gcloud-sqlproxy
+          secretName: cloudsql-instance-credentials
+      - name: cloudsql
+        emptyDir:
+      - name: ssl-certs
+        hostPath:
+          path: /etc/ssl/certs
     {{- if .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
