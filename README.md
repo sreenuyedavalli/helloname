@@ -7,11 +7,16 @@ To see system data go to http://104.154.136.98/health which will return disk and
 
 Tech:
 Go
-Kubernetes
 Docker
-Terraform
+Kubernetes
 Helm
+Terraform
 Postgres
+
+Buckets:
+nyt-hello-tf //tfvars and state
+ny-helloname-creds //json creds
+
 
 Build and Deploy:
 GKE Cluster can be bootstraped by downloading the .tfvars file to the ./gcp dir of this repo. CloudSQL databases prohibit the reuse of identical db intance names for a fixed period so update the {db_instance_name =} var in tfvars to a uniqe value to launch the db. The Makefile conists of 5 operations. 
