@@ -1,0 +1,27 @@
+{
+  "Comment": "Create a subdomain NS record in the parent domain",
+  "Changes": [
+    {
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "k8s.braze.com",
+        "Type": "NS",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "ns-423.awsdns-52.com"
+          },
+          {
+            "Value": "ns-608.awsdns-12.net"
+          },
+          {
+            "Value": "ns-1195.awsdns-21.org"
+          },
+          {
+            "Value": "ns-1639.awsdns-12.co.uk"
+          }
+        ]
+      }
+    }
+  ]
+}
